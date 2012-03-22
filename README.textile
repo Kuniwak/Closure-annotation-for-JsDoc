@@ -20,7 +20,7 @@ So, this plugin add namespace annotation then it finds using goog.provide in you
 <pre>
 /**
  * @namespace
- * @name foobar
+ * @name foo
  */
 
 
