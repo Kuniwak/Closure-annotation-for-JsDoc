@@ -1,0 +1,41 @@
+h1. Closure annotation for JsDoc
+
+h2. Abstract
+
+This is a JsDoc plugin that makes better JsDoc annotations from Closure annotations.
+
+For example:
+your script:
+<pre><code class="js">
+goog.provide('foo');
+
+
+/**
+ * @const
+ * @type {string}
+ */
+foo.CONST = 'foobar'; // This constant will be NOT evaluated.
+</code></pre>
+So, this plugin add namespace annotation then it finds using goog.provide in your script:
+<pre><code class="js">
+/**
+ * @namespace
+ * @name foobar
+ */
+
+
+/**
+ * @const
+ * @type {string}
+ */
+foo.CONST = 'foobar'; // This constant will be evaluated.
+</code></pre>
+
+And the plugin will NOT add namespace annotation if the argument looks like a constructer name.
+
+
+h2. Install
+
+bq. The interface was designed to be simple. If you are using a plugin, installing it is as easy as saving the plugin file to the app/plugins directory - that's it. The plugin will automatically be loaded and used for you.
+
+Show the official "documents":http://code.google.com/p/jsdoc-toolkit/wiki/Plugins , if you want more informations.
