@@ -28,7 +28,7 @@ So, this plugin add namespace annotation then it finds using goog.provide in you
 foo.CONST = 'foobar'; // This constant will be listed.
 </pre>
 
-And the plugin will NOT add namespace annotation if the argument looks like a constructer name.
+And the plugin will not add namespace annotation if the argument looks like a constructor name.
 
 
 h2. Install
