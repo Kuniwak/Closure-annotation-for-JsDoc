@@ -10,8 +10,10 @@ JSDOC.PluginManager.registerPlugin(
       // namepath in JsDoc.
       comment.src = comment.src.replace(/@extends \{([^\}]+)\}/i,
                                         "@extends $1");
-      // if this object has @param or @return, it might be function.
-      if (comment.src.match(/@(param|return)/)) {
+      // if this object has @param or @return, it might be function. But it
+      // should not add @function, when the objects had @constructor.
+      if (comment.src.match(/@(param|return)/) &&
+          !comment.src.match(/@constructor/)) {
         comment.src += '@function\n';
       }
     },
@@ -23,8 +25,9 @@ JSDOC.PluginManager.registerPlugin(
         // if goog.provide is called, it provide namespace that has a name from
         // the argument.
         if (name.match(/(\.[a-z_$][a-zA-Z0-9_$]+$|^[a-z_$]+$)/)) {
-          // Don't work, and the cause was unkwoun.
+          // it doesn't work, and the cause was unkwoun.
           // Namespace(name);
+          LOG.warn(name);
           var text = [
             '/**',
             ' * @namespace',
