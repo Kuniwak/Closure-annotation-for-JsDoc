@@ -27,7 +27,6 @@ JSDOC.PluginManager.registerPlugin(
         if (name.match(/(\.[a-z_$][a-zA-Z0-9_$]+$|^[a-z_$]+$)/)) {
           // it doesn't work, and the cause was unkwoun.
           // Namespace(name);
-          LOG.warn(name);
           var text = [
             '/**',
             ' * @namespace',
