@@ -1,5 +1,3 @@
-var flag = true;
-
 JSDOC.PluginManager.registerPlugin(
   "JSDOC.closureLibraryBond",
   {
@@ -28,7 +26,7 @@ JSDOC.PluginManager.registerPlugin(
       comment.src = comment.src.replace(/@implements/i, "@extends");
       comment.src = comment.src.replace(/@enum .*/i, "@namespace");
       // @const tag converts to @constant tag
-      comment.src = comment.src.replace(/@const */i, "@constant");
+      comment.src = comment.src.replace(/@const([^r]|$)/i, "@constant");
       // @extends tag and @type tag have type description on closure,
       // but each tags reqiure namepath on JsDoc.
       comment.src = comment.src.replace(/@extends \{([^\}]+)\}/i,
@@ -44,22 +42,12 @@ JSDOC.PluginManager.registerPlugin(
         comment.src.replace(/@const/, '@namesoace');
       }
     },
+    // adapt to "goog.provide" and "goog.addSingletonGetter"
     onFunctionCall: function(info) {
       if (info.name === 'goog.provide') {
-        var name = info.tokenStream[1].data.replace(/'/g, '');
-        // if goog.provide is called, it provide namespace that has a name from
-        // the argument.
-        if (name.match(/(\.[a-z_$][a-zA-Z0-9_$]+$|^[a-z_$]+$)/)) {
-          // it doesn't work, and the cause was unkwoun.
-          // Namespace(name);
-          var text = [
-            '/**',
-            ' * @namespace',
-            ' * @name ' + name,
-            ' */'
-          ].join('\n');
-          info.doc = text;
-        }
+        // TODO: Implements a goog.provide behavior.
+        //       But now, it cannot get symbolSet,
+        //       so it works when onFinishedParsing is called.
       } else if (info.name === 'goog.addSingletonGetter') {
         // if goog.addSingletonGetter is called, it adds a ".getInstance"
         // method to the object from argument.
@@ -73,6 +61,40 @@ JSDOC.PluginManager.registerPlugin(
         ].join('\n');
         info.doc = text;
       }
+    },
+    onSymbol: function(symbol) {
+      var hierarchy = symbol.alias.split('.');
+      symbol.parentSymbolAlias = hierarchy.slice(0, -1).join('.') || null;
+    },
+    onFinishedParsing: function(symbolSet) {
+      var symbols = symbolSet.toArray();
+      var addParentSymbolIfNeccesary = function(symbol) {
+        var parentAlias = symbol.parentSymbolAlias;
+        if (parentAlias) {
+          if (!symbolSet.hasSymbol(parentAlias)) {
+            var namepath = parentAlias.split('.');
+            var name = namepath.pop();
+            var newParentSymbol = new JSDOC.Symbol(
+              /* String name              */ parentAlias,
+              /* Array params             */ [],
+              /* String isa               */ "OBJECT",
+              /* JSDOC.DOcComment comment */ new JSDOC.DocComment([
+                '/**',
+                ' * @namespace',
+                ' * @name ' + name,
+                ' */'
+              ].join('\n'))
+            );
+            symbolSet.addSymbol(newParentSymbol);
+            addParentSymbolIfNeccesary(newParentSymbol);
+          }
+        }
+      };
+
+      var members = symbols.filter(function(symbol) {
+        return !symbol.isNamespace && !symbol.is("FILE");
+      });
+      members.forEach(addParentSymbolIfNeccesary);
     }
   }
 );
