@@ -64,14 +64,21 @@ JSDOC.PluginManager.registerPlugin(
     },
     onSymbol: function(symbol) {
       var hierarchy = symbol.alias.split('.');
-      symbol.memberOf = hierarchy.slice(0, -1).join('.');
+      symbol.parentSymbolAlias = hierarchy.slice(0, -1).join('.');
     },
     onFinishedParsing: function(symbolSet) {
       var symbols = symbolSet.toArray();
       var addParentSymbolIfNeccesary = function(symbol) {
-        var parentAlias = symbol.memberOf;
+        var parentAlias = symbol.parentSymbolAlias;
         if (parentAlias) {
           var parentSymbol = symbolSet.getSymbol(parentAlias);
+          var appendMember = function(parentSymbol, symbol) {
+            if (symbol.isNamespace) {
+              parentSymbol.properties.push(symbol);
+            } else if (symbol.is("CONSTRUCTOR")) {
+              parentSymbol.methods.push(symbol);
+            }
+          };
           if (!parentSymbol) {
             var namepath = parentAlias.split('.');
             var name = namepath.pop();
@@ -86,19 +93,16 @@ JSDOC.PluginManager.registerPlugin(
                 ' */'
               ].join('\n'))
             );
-            symbolSet.addSymbol(newParentSymbol);
             // The parent symbol was created this script do not have any members.
             // So, you should add members if the parent does not have own members.
+            appendMember(newParentSymbol, symbol);
+            symbolSet.addSymbol(newParentSymbol);
             addParentSymbolIfNeccesary(newParentSymbol);
           } else {
             // The parent symbol was created this script do not have any members.
             // So, you should add members if the parent does not have own members.
             if (!parentSymbol.hasMember(symbol.alias)) {
-              if (symbol.is("FUNCTION")) {
-                parentSymbol.methods.push(symbol);
-              } else if (symbol.is("OBJECT")) {
-                parentSymbol.properties.push(symbol);
-              }
+              appendMember(parentSymbol, symbol);
             }
           }
         }
