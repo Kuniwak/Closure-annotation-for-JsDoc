@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Closure-annotation-for-jsdoc by OrgaChem</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Closure-annotation-for-jsdoc</h1>
+        <p>The JsDoc plugin makes better JsDoc Annotations from Closure Annotations.</p>
+        <p class="view"><a href="https://github.com/OrgaChem/Closure-annotation-for-JsDoc">View the Project on GitHub <small>OrgaChem/Closure-annotation-for-JsDoc</small></a></p>
+        <ul>
+          <li><a href="https://github.com/OrgaChem/Closure-annotation-for-JsDoc/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/OrgaChem/Closure-annotation-for-JsDoc/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/OrgaChem/Closure-annotation-for-JsDoc">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>h1. Closure annotation for JsDoc</p>
+
+<p>h2. Abstract</p>
+
+<p>This is a JsDoc plugin that makes better JsDoc annotations from Closure annotations.</p>
+
+<p>For example:
+your script:</p>
+
+<pre>
+goog.provide('foo');
+
+
+/** @const */
+foo.CONST = 'foobar'; // This constant will NOT be listed.
+</pre>
+
+<p>The constant will not be listed.
+So, this plugin add namespace annotation then it finds using goog.provide in your script:</p>
+
+<pre>
+/**
+ * @namespace
+ * @name foo
+ */
+
+
+/** @const */
+foo.CONST = 'foobar'; // This constant will be listed.
+</pre>
+
+<p>And the plugin will not add namespace annotation if the argument looks like a constructor name.</p>
+
+<p>h2. Install</p>
+
+<p>bq. The interface was designed to be simple. If you are using a plugin, installing it is as easy as saving the plugin file to the app/plugins directory - that's it. The plugin will automatically be loaded and used for you.</p>
+
+<p>Show the official "documents":<a href="http://code.google.com/p/jsdoc-toolkit/wiki/Plugins">http://code.google.com/p/jsdoc-toolkit/wiki/Plugins</a> , if you want more informations.</p>
+
+<p>h2. Changelog</p>
+
+<ul>
+<li>Respond to "goog.addSingletonGetter" - Feb. 25, 2012</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/OrgaChem">OrgaChem</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
