@@ -36,7 +36,7 @@ h2. Install
 
 bq. The interface was designed to be simple. If you are using a plugin, installing it is as easy as saving the plugin file to the app/plugins directory - that's it. The plugin will automatically be loaded and used for you.
 
-Show the official "documents":http://code.google.com/p/jsdoc-toolkit/wiki/Plugins , if you want more informations.
+See the official "documents":http://code.google.com/p/jsdoc-toolkit/wiki/Plugins , if you want more information.
 
 
 h2. Changelog
