@@ -5,13 +5,13 @@ JSDOC.PluginManager.registerPlugin(
       var type = tag.type;
       // add Null to type if the type contains "?", such as: {?Array}
       type = type.replace(/\?([a-zA-Z_$][a-zA-Z0-9_$.]*[a-zA-Z0-9_$])/g,
-                          '$1|Null');
+                          '$1|null');
       // remove "!" if the type contains "!", such as: {!Array}
       type = type.replace(/!/g, '');
       // set optional if the last character is "=", such as: {Array=}
       if (type.match(/=$/)) tag.isOptional = 'true';
       // add Undefined to type if the type contains "=", such as: {Array=}
-      type = type.replace(/=/g, '|Undefined');
+      type = type.replace(/=/g, '|undefined');
       // replace to capital cases
       type = type.replace(/string/g, 'String');
       type = type.replace(/boolean/g, 'Boolean');
