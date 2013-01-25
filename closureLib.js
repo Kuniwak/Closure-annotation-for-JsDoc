@@ -25,8 +25,6 @@ JSDOC.PluginManager.registerPlugin(
       // @implements tag converts to @extends tag
       comment.src = comment.src.replace(/@implements/i, "@extends");
       comment.src = comment.src.replace(/@enum .*/i, "@namespace");
-      // @const tag converts to @constant tag
-      comment.src = comment.src.replace(/@const([^r]|$)/i, "@constant");
       // @extends tag and @type tag have type description on closure,
       // but each tags reqiure namepath on JsDoc.
       comment.src = comment.src.replace(/@extends \{([^\}]+)\}/i,
