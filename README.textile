@@ -2,7 +2,8 @@ h1. Closure annotation for JsDoc
 
 h2. Abstract
 
-This is a JsDoc plugin that makes better JsDoc annotations from Closure annotations.
+This is a JsDoc-toolkit plugin that makes better JsDoc annotations from Closure annotations.
+*The plugin do not work on JsDoc3*, so use "closure-annotate-jsdoc3":https://github.com/OrgaChem/closure-annotate-jsdoc3 .
 
 For example:
 your script:
